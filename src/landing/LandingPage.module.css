@@ -1,0 +1,507 @@
+:global(html:has(.page)),
+:global(body:has(.page)) {
+  margin: 0;
+  min-height: 100%;
+  background: #f4f1ea;
+}
+
+:global(body:has(.page)) {
+  overflow-x: hidden;
+}
+
+.page {
+  --bg: #f4f1ea;
+  --surface: #fffaf0;
+  --surface-2: #e9ff33;
+  --border: #12110f;
+  --text: #12110f;
+  --text-muted: #575044;
+  --accent: #ff4d00;
+  --accent-2: #1f47ff;
+  --on-accent: #fffaf0;
+  --font-display: "Archivo Black", Impact, sans-serif;
+  --font-body: "Space Grotesk", Arial, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+  --container: 92rem;
+  --radius-s: 0;
+  --radius-m: 8px;
+  --shadow-hard: 6px 6px 0 var(--border);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --dur-slow: 600ms;
+
+  min-height: 100dvh;
+  background:
+    linear-gradient(90deg, rgb(18 17 15 / 0.08) 1px, transparent 1px) 0 0 /
+      clamp(38px, 6vw, 88px) clamp(38px, 6vw, 88px),
+    radial-gradient(circle at 88% 13%, rgb(255 77 0 / 0.22), transparent 26rem),
+    linear-gradient(135deg, #f4f1ea 0%, #fffaf0 54%, #e7e0d1 100%);
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow: clip;
+}
+
+.page * {
+  box-sizing: border-box;
+}
+
+.hero {
+  width: min(100% - clamp(24px, 5vw, 72px), var(--container));
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: clamp(18px, 2.5vw, 32px) 0 clamp(40px, 6vw, 88px);
+  position: relative;
+}
+
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.hero::before {
+  inset: 5.5rem auto auto min(54vw, 50rem);
+  width: clamp(7rem, 16vw, 17rem);
+  aspect-ratio: 1;
+  background: var(--surface-2);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow-hard);
+  transform: rotate(8deg);
+  animation: stickerFloat 7s var(--ease-out) infinite alternate;
+}
+
+.hero::after {
+  right: clamp(-2rem, -4vw, -1rem);
+  bottom: 5rem;
+  width: clamp(8rem, 18vw, 18rem);
+  height: clamp(4rem, 9vw, 9rem);
+  border: 2px solid var(--border);
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      var(--accent),
+      var(--accent) 10px,
+      var(--border) 10px,
+      var(--border) 14px
+    );
+  transform: rotate(-5deg);
+  opacity: 0.92;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  min-height: 52px;
+  opacity: 0;
+  transform: translateY(-14px);
+  animation: enterDown var(--dur-slow) var(--ease-out) 80ms forwards;
+}
+
+.brand,
+.navMeta,
+.kicker,
+.cardLabel,
+.index,
+.heroPanel span {
+  font-family: var(--font-mono);
+}
+
+.brand {
+  color: var(--on-accent);
+  background: var(--border);
+  border: 2px solid var(--border);
+  box-shadow: 4px 4px 0 var(--accent);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.8rem;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.brand:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--accent);
+}
+
+.brand:focus-visible,
+.projectCard:focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 4px;
+}
+
+.navMeta {
+  max-width: 18ch;
+  color: var(--text-muted);
+  text-align: right;
+  font-size: clamp(0.68rem, 1.4vw, 0.82rem);
+  line-height: 1.25;
+}
+
+.marquee {
+  width: 100vw;
+  margin: clamp(28px, 4vw, 52px) 50% 0;
+  transform: translateX(-50%);
+  overflow: hidden;
+  border-block: 2px solid var(--border);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: marquee 26s linear infinite;
+}
+
+.marqueeTrack span {
+  display: inline-flex;
+  align-items: center;
+  min-height: clamp(44px, 5vw, 72px);
+  padding-inline: clamp(1.25rem, 3vw, 3.5rem);
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4vw, 4.5rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.marqueeTrack span::after {
+  content: "/";
+  margin-left: clamp(1.25rem, 3vw, 3.5rem);
+  color: var(--border);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 0.38fr);
+  gap: clamp(22px, 5vw, 74px);
+  align-items: end;
+  margin-top: clamp(38px, 8vw, 104px);
+}
+
+.heroCopy {
+  position: relative;
+  z-index: 1;
+}
+
+.kicker {
+  width: fit-content;
+  margin: 0 0 clamp(18px, 3vw, 30px);
+  padding: 0.4rem 0.55rem;
+  border: 2px solid var(--border);
+  background: var(--surface-2);
+  box-shadow: 4px 4px 0 var(--border);
+  font-size: clamp(0.72rem, 1vw, 0.84rem);
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(18px) rotate(-1deg);
+  animation: enterUp var(--dur-slow) var(--ease-out) 160ms forwards;
+}
+
+.title {
+  max-width: 11ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(3.35rem, 11vw, 10.8rem);
+  line-height: 0.86;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-wrap: balance;
+  opacity: 0;
+  transform: translateY(28px);
+  animation: enterUp 900ms var(--ease-out-expo) 260ms forwards;
+}
+
+.heroPanel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1.1rem;
+  align-content: start;
+  min-height: 18rem;
+  padding: clamp(1rem, 2.1vw, 1.6rem);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-hard);
+  transform: rotate(1deg);
+  opacity: 0;
+  animation: panelPunch 800ms var(--ease-out-expo) 500ms forwards;
+}
+
+.heroPanel span {
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.heroPanel strong {
+  font-size: clamp(1.35rem, 2.4vw, 2.2rem);
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.heroPanel p {
+  max-width: 30ch;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 24px);
+  margin-top: clamp(42px, 7vw, 86px);
+  position: relative;
+  z-index: 2;
+}
+
+.projectCard {
+  min-height: clamp(18rem, 28vw, 25rem);
+  display: grid;
+  grid-template-rows: auto minmax(7rem, 1fr) auto;
+  gap: clamp(14px, 2vw, 22px);
+  padding: clamp(16px, 2.2vw, 24px);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  box-shadow: var(--shadow-hard);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(28px) rotate(var(--tilt, 0deg));
+  animation: cardIn 720ms var(--ease-out) forwards;
+  animation-delay: calc(620ms + var(--card-index) * 65ms);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    background var(--dur-base) var(--ease-out);
+}
+
+.projectCard:nth-child(3n + 1) {
+  --tilt: -0.6deg;
+}
+
+.projectCard:nth-child(3n + 2) {
+  --tilt: 0.45deg;
+}
+
+.projectCard:nth-child(3n) {
+  --tilt: -0.15deg;
+}
+
+.projectCard:hover {
+  background: #fff3d8;
+  transform: translate(3px, 3px) rotate(0deg);
+  box-shadow: 3px 3px 0 var(--border);
+}
+
+.projectCard:active {
+  transform: translate(6px, 6px) scale(0.99);
+  box-shadow: none;
+}
+
+.index {
+  width: fit-content;
+  border-bottom: 2px solid var(--border);
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.plate {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 2px solid var(--border);
+  background:
+    linear-gradient(135deg, rgb(18 17 15 / 0.08) 25%, transparent 25%) 0 0 /
+      18px 18px,
+    #f8f6ee;
+  position: relative;
+  overflow: hidden;
+}
+
+.plate::after {
+  content: "blank image";
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  color: rgb(18 17 15 / 0.42);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.cardBody {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.cardLabel {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.2vw, 2.35rem);
+  line-height: 0.94;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.cardTone {
+  color: var(--text-muted);
+  font-size: clamp(0.92rem, 1.2vw, 1rem);
+  line-height: 1.35;
+}
+
+.cardAction {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--border);
+  background: var(--accent);
+  color: var(--on-accent);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+
+.projectCard:hover .cardAction {
+  background: var(--accent-2);
+  transform: rotate(-8deg);
+}
+
+.arrowIcon {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+@keyframes enterDown {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes enterUp {
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(-1deg);
+  }
+}
+
+@keyframes panelPunch {
+  from {
+    opacity: 0;
+    transform: translateY(24px) rotate(3deg) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(1deg) scale(1);
+  }
+}
+
+@keyframes cardIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--tilt, 0deg));
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes stickerFloat {
+  to {
+    transform: translateY(14px) rotate(4deg);
+  }
+}
+
+@media (max-width: 980px) {
+  .heroGrid,
+  .projectGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroPanel {
+    min-height: auto;
+  }
+
+  .title {
+    max-width: 10ch;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    width: min(100% - 28px, var(--container));
+    padding-bottom: 52px;
+  }
+
+  .nav {
+    align-items: flex-start;
+  }
+
+  .hero::before {
+    inset: 8.5rem -1.5rem auto auto;
+    width: 6.4rem;
+  }
+
+  .hero::after {
+    display: none;
+  }
+
+  .title {
+    font-size: clamp(3rem, 17vw, 5.5rem);
+  }
+
+  .projectCard {
+    min-height: 17rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav,
+  .kicker,
+  .title,
+  .heroPanel,
+  .projectCard {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .marqueeTrack,
+  .hero::before {
+    animation: none;
+  }
+
+  .projectCard,
+  .brand,
+  .cardAction {
+    transition: none;
+  }
+}
