@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { projects } from "../projects/projects.js";
 import styles from "./LandingPage.module.css";
@@ -11,11 +12,28 @@ function ArrowIcon() {
   );
 }
 
-function ProjectCard({ project, index }) {
+function CopyIcon() {
   return (
-    <Link
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.smallIcon}>
+      <rect x="9" y="9" width="10" height="10" rx="1" />
+      <path d="M5 15V5h10" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.smallIcon}>
+      <path d="m6 6 12 12" />
+      <path d="m18 6-12 12" />
+    </svg>
+  );
+}
+
+function ProjectCard({ project, index, onShowPrompt }) {
+  return (
+    <article
       className={styles.projectCard}
-      to={project.path}
       style={{ "--card-index": index }}
     >
       <span className={styles.index}>{String(index + 1).padStart(2, "0")}</span>
@@ -25,14 +43,102 @@ function ProjectCard({ project, index }) {
         <span className={styles.cardTitle}>{project.title}</span>
         <span className={styles.cardTone}>{project.tone}</span>
       </span>
-      <span className={styles.cardAction} aria-label={`Open ${project.title}`}>
-        <ArrowIcon />
+      <span className={styles.cardActions}>
+        <button
+          className={styles.promptButton}
+          type="button"
+          onClick={() => onShowPrompt(project)}
+        >
+          Show prompt
+        </button>
+        <Link className={styles.cardAction} to={project.path} aria-label={`Open ${project.title}`}>
+          <ArrowIcon />
+        </Link>
       </span>
-    </Link>
+    </article>
+  );
+}
+
+function PromptModal({ project, onClose }) {
+  const [copyState, setCopyState] = useState("Copy prompt");
+  const closeButtonRef = useRef(null);
+  const promptTextRef = useRef(null);
+
+  useEffect(() => {
+    closeButtonRef.current?.focus();
+
+    function onKeyDown(event) {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
+  async function copyPrompt() {
+    try {
+      await navigator.clipboard.writeText(project.prompt);
+      setCopyState("Copied");
+    } catch {
+      promptTextRef.current?.select();
+      const copied = document.execCommand("copy");
+      setCopyState(copied ? "Copied" : "Selected");
+    }
+  }
+
+  return (
+    <div className={styles.modalLayer} role="presentation" onMouseDown={onClose}>
+      <section
+        aria-labelledby="prompt-modal-title"
+        aria-modal="true"
+        className={styles.modal}
+        role="dialog"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <div className={styles.modalHeader}>
+          <div>
+            <span className={styles.modalKicker}>Prompt sheet</span>
+            <h2 id="prompt-modal-title" className={styles.modalTitle}>
+              {project.title}
+            </h2>
+          </div>
+          <button
+            aria-label="Close prompt"
+            className={styles.closeButton}
+            onClick={onClose}
+            ref={closeButtonRef}
+            type="button"
+          >
+            <CloseIcon />
+          </button>
+        </div>
+
+        <textarea
+          className={styles.promptText}
+          readOnly
+          ref={promptTextRef}
+          value={project.prompt}
+          aria-label={`${project.title} prompt`}
+        />
+
+        <div className={styles.modalFooter}>
+          <button className={styles.copyButton} onClick={copyPrompt} type="button">
+            <CopyIcon />
+            <span>{copyState}</span>
+          </button>
+          <button className={styles.secondaryCloseButton} onClick={onClose} type="button">
+            Close
+          </button>
+        </div>
+      </section>
+    </div>
   );
 }
 
 export function LandingPage() {
+  const [selectedProject, setSelectedProject] = useState(null);
   const marqueeItems = ["Demos", "Strategy", "Interfaces", "Motion", "Launches"];
 
   return (
@@ -73,10 +179,18 @@ export function LandingPage() {
 
         <div className={styles.projectGrid} aria-label="Demo projects">
           {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+            <ProjectCard
+              key={project.id}
+              project={project}
+              index={index}
+              onShowPrompt={setSelectedProject}
+            />
           ))}
         </div>
       </section>
+      {selectedProject ? (
+        <PromptModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+      ) : null}
     </main>
   );
 }

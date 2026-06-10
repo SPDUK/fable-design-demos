@@ -5,6 +5,7 @@ export const projects = [
     path: "/fitness-gym-app",
     label: "Body systems",
     tone: "High voltage discipline",
+    prompt: "prompt here",
   },
   {
     id: "restaurant-food",
@@ -12,6 +13,7 @@ export const projects = [
     path: "/restaurant-food",
     label: "Hospitality",
     tone: "Warm appetite theater",
+    prompt: "prompt here",
   },
   {
     id: "real-estate",
@@ -19,6 +21,7 @@ export const projects = [
     path: "/real-estate",
     label: "Property",
     tone: "Spatial trust signals",
+    prompt: "prompt here",
   },
   {
     id: "health-wellness",
@@ -26,6 +29,7 @@ export const projects = [
     path: "/health-wellness",
     label: "Care",
     tone: "Calm proof and softness",
+    prompt: "prompt here",
   },
   {
     id: "fintech-crypto-dashboard",
@@ -33,6 +37,7 @@ export const projects = [
     path: "/fintech-crypto-dashboard",
     label: "Capital",
     tone: "Risk, signal, velocity",
+    prompt: "prompt here",
   },
   {
     id: "saas-analytics-dashboard",
@@ -40,6 +45,7 @@ export const projects = [
     path: "/saas-analytics-dashboard",
     label: "Operations",
     tone: "Executive data command",
+    prompt: "prompt here",
   },
   {
     id: "educational-platform",
@@ -47,6 +53,7 @@ export const projects = [
     path: "/educational-platform",
     label: "Learning",
     tone: "Momentum through mastery",
+    prompt: "prompt here",
   },
   {
     id: "pet-grooming-spa",
@@ -54,6 +61,7 @@ export const projects = [
     path: "/pet-grooming-spa",
     label: "Local service",
     tone: "Tender detail and trust",
+    prompt: "prompt here",
   },
   {
     id: "ai-chatbot-platform",
@@ -61,5 +69,6 @@ export const projects = [
     path: "/ai-chatbot-platform",
     label: "AI product",
     tone: "Conversation as interface",
+    prompt: "prompt here",
   },
 ];

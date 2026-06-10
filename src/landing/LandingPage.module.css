@@ -107,7 +107,11 @@
 .kicker,
 .cardLabel,
 .index,
-.heroPanel span {
+.heroPanel span,
+.promptButton,
+.modalKicker,
+.copyButton,
+.secondaryCloseButton {
   font-family: var(--font-mono);
 }
 
@@ -134,7 +138,11 @@
 }
 
 .brand:focus-visible,
-.projectCard:focus-visible {
+.cardAction:focus-visible,
+.promptButton:focus-visible,
+.copyButton:focus-visible,
+.secondaryCloseButton:focus-visible,
+.closeButton:focus-visible {
   outline: 3px solid var(--accent-2);
   outline-offset: 4px;
 }
@@ -276,9 +284,7 @@
   border: 2px solid var(--border);
   background: var(--surface);
   color: var(--text);
-  text-decoration: none;
   box-shadow: var(--shadow-hard);
-  cursor: pointer;
   opacity: 0;
   transform: translateY(28px) rotate(var(--tilt, 0deg));
   animation: cardIn 720ms var(--ease-out) forwards;
@@ -301,13 +307,14 @@
   --tilt: -0.15deg;
 }
 
-.projectCard:hover {
+.projectCard:hover,
+.projectCard:focus-within {
   background: #fff3d8;
   transform: translate(3px, 3px) rotate(0deg);
   box-shadow: 3px 3px 0 var(--border);
 }
 
-.projectCard:active {
+.projectCard:has(.cardAction:active) {
   transform: translate(6px, 6px) scale(0.99);
   box-shadow: none;
 }
@@ -368,6 +375,45 @@
   line-height: 1.35;
 }
 
+.cardActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+}
+
+.promptButton,
+.copyButton,
+.secondaryCloseButton,
+.closeButton {
+  border: 2px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.promptButton {
+  min-height: 44px;
+  padding: 0 0.78rem;
+  background: var(--surface-2);
+  box-shadow: 3px 3px 0 var(--border);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.promptButton:hover,
+.copyButton:hover,
+.secondaryCloseButton:hover,
+.closeButton:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--border);
+}
+
 .cardAction {
   display: inline-grid;
   place-items: center;
@@ -376,6 +422,8 @@
   border: 2px solid var(--border);
   background: var(--accent);
   color: var(--on-accent);
+  cursor: pointer;
+  text-decoration: none;
   transition:
     transform var(--dur-fast) var(--ease-out),
     background var(--dur-fast) var(--ease-out);
@@ -394,6 +442,137 @@
   stroke-width: 2.4;
   stroke-linecap: square;
   stroke-linejoin: miter;
+}
+
+.smallIcon {
+  width: 1.05rem;
+  height: 1.05rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.modalLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: clamp(18px, 4vw, 52px);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgb(18 17 15 / 0.12),
+      rgb(18 17 15 / 0.12) 1px,
+      transparent 1px,
+      transparent 18px
+    ),
+    rgb(18 17 15 / 0.64);
+  animation: modalFade var(--dur-base) var(--ease-out) forwards;
+}
+
+.modal {
+  width: min(100%, 42rem);
+  max-height: min(760px, calc(100dvh - 36px));
+  display: grid;
+  gap: clamp(18px, 3vw, 28px);
+  padding: clamp(18px, 3vw, 30px);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  box-shadow: 9px 9px 0 var(--accent);
+  transform: rotate(-0.7deg) translateY(16px);
+  animation: modalIn 420ms var(--ease-out-expo) forwards;
+  overflow: auto;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.modalKicker {
+  display: inline-flex;
+  margin-bottom: 0.7rem;
+  padding: 0.32rem 0.45rem;
+  border: 2px solid var(--border);
+  background: var(--surface-2);
+  box-shadow: 3px 3px 0 var(--border);
+  color: var(--text);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.modalTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.closeButton {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  display: inline-grid;
+  place-items: center;
+  background: var(--accent);
+  box-shadow: 3px 3px 0 var(--border);
+  color: var(--on-accent);
+}
+
+.promptText {
+  width: 100%;
+  min-height: clamp(11rem, 28vw, 17rem);
+  resize: vertical;
+  padding: 1rem;
+  border: 2px solid var(--border);
+  background:
+    linear-gradient(90deg, rgb(18 17 15 / 0.06) 1px, transparent 1px) 0 0 /
+      18px 18px,
+    #f8f6ee;
+  color: var(--text);
+  font: 700 1rem / 1.55 var(--font-mono);
+}
+
+.promptText:focus {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 4px;
+}
+
+.modalFooter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: space-between;
+}
+
+.copyButton,
+.secondaryCloseButton {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0 0.9rem;
+  box-shadow: 3px 3px 0 var(--border);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+}
+
+.copyButton {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.secondaryCloseButton {
+  background: var(--surface-2);
 }
 
 @keyframes enterDown {
@@ -440,6 +619,21 @@
   }
 }
 
+@keyframes modalFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalIn {
+  to {
+    transform: rotate(-0.7deg) translateY(0);
+  }
+}
+
 @media (max-width: 980px) {
   .heroGrid,
   .projectGrid {
@@ -481,6 +675,22 @@
   .projectCard {
     min-height: 17rem;
   }
+
+  .cardActions,
+  .modalFooter {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .promptButton,
+  .copyButton,
+  .secondaryCloseButton {
+    width: 100%;
+  }
+
+  .modalHeader {
+    align-items: stretch;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -488,7 +698,9 @@
   .kicker,
   .title,
   .heroPanel,
-  .projectCard {
+  .projectCard,
+  .modal,
+  .modalLayer {
     opacity: 1;
     transform: none;
     animation: none;
@@ -501,7 +713,11 @@
 
   .projectCard,
   .brand,
-  .cardAction {
+  .cardAction,
+  .promptButton,
+  .copyButton,
+  .secondaryCloseButton,
+  .closeButton {
     transition: none;
   }
 }
