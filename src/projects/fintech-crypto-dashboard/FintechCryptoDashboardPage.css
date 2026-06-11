@@ -1,1 +1,956 @@
-/* Intentionally empty: this demo page is unstyled until its bespoke build exists. */
+:root:has(.helix) {
+  background: #06080c;
+}
+
+body:has(.helix) {
+  margin: 0;
+  min-height: 100%;
+  background: #06080c;
+  overflow-x: hidden;
+}
+
+.helix {
+  --bg: #06080c;
+  --bg-2: #080d13;
+  --surface: #0b1017;
+  --surface-2: #111822;
+  --surface-3: #151f2b;
+  --border: rgb(202 224 255 / 0.105);
+  --border-strong: rgb(202 224 255 / 0.19);
+  --text: #e7ecf4;
+  --text-muted: #8994a8;
+  --text-dim: #5f6a7c;
+  --accent: #38d6b0;
+  --accent-hover: #65e5c9;
+  --on-accent: #03120f;
+  --danger: #ff6d7a;
+  --warning: #f2b24d;
+  --particle-muted: #26384e;
+  --font-display: "Space Grotesk", "Inter Tight", system-ui, sans-serif;
+  --font-body: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "Space Mono", "IBM Plex Mono", ui-monospace, monospace;
+  --container: 92rem;
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 8px;
+  --shadow-s: 0 1px 0 rgb(255 255 255 / 0.06) inset;
+  --shadow-m: 0 1px 0 rgb(255 255 255 / 0.065) inset, 0 18px 60px rgb(0 0 0 / 0.36);
+  --shadow-l: 0 1px 0 rgb(255 255 255 / 0.07) inset, 0 34px 100px rgb(0 0 0 / 0.48);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --dur-slow: 600ms;
+  --dur-hero: 900ms;
+
+  min-height: 100dvh;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 78% 18%, rgb(56 214 176 / 0.12), transparent 30rem),
+    radial-gradient(circle at 18% 8%, rgb(242 178 77 / 0.055), transparent 22rem),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 45%, #05070a 100%);
+  font-family: var(--font-body);
+  font-variant-numeric: tabular-nums;
+  overflow: clip;
+}
+
+.helix *,
+.helix *::before,
+.helix *::after {
+  box-sizing: border-box;
+}
+
+.helix::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(rgb(255 255 255 / 0.026) 1px, transparent 1px) 0 0 / 100% 48px,
+    linear-gradient(90deg, rgb(255 255 255 / 0.024) 1px, transparent 1px) 0 0 / 48px 100%;
+  mask-image: linear-gradient(to bottom, black 0%, black 65%, transparent 100%);
+}
+
+.helix::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.32;
+  background-image:
+    linear-gradient(45deg, rgb(255 255 255 / 0.022) 25%, transparent 25%),
+    linear-gradient(-45deg, rgb(255 255 255 / 0.016) 25%, transparent 25%);
+  background-size: 3px 3px;
+  mix-blend-mode: screen;
+}
+
+.helix a {
+  color: inherit;
+}
+
+.helix button,
+.helix input {
+  font: inherit;
+}
+
+.helix-hero,
+.helix-proof,
+.helix-dashboard-section,
+.helix-signals,
+.helix-waitlist {
+  position: relative;
+  z-index: 1;
+}
+
+.helix-hero {
+  min-height: 78svh;
+  width: min(100% - clamp(28px, 5vw, 72px), var(--container));
+  margin: 0 auto;
+  padding: clamp(18px, 2.4vw, 30px) 0 2.5rem;
+}
+
+.helix-particles {
+  position: absolute;
+  inset: 0 calc(50% - 50vw);
+  width: 100vw;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.helix-particles.is-static {
+  background:
+    radial-gradient(circle at 78% 40%, rgb(56 214 176 / 0.18), transparent 18rem),
+    radial-gradient(circle at 84% 42%, transparent 0 8rem, rgb(56 214 176 / 0.08) 8.2rem 10rem, transparent 10.4rem);
+}
+
+.helix-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 48px;
+  opacity: 0;
+  transform: translateY(-12px);
+  animation: helixEnterDown var(--dur-slow) var(--ease-out) 80ms forwards;
+}
+
+.helix-brand,
+.helix-nav-links,
+.helix-kicker,
+.helix-panel-head,
+.helix-tape,
+.helix-kpi,
+.helix-segmented,
+.helix-depth,
+.helix-form label,
+.helix-form p,
+.helix-proof span,
+.helix-signal-grid span {
+  font-family: var(--font-mono);
+}
+
+.helix-brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  border: 1px solid var(--border-strong);
+  background: rgb(11 16 23 / 0.82);
+  box-shadow: var(--shadow-s);
+  padding: 0 0.85rem;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.82rem;
+  letter-spacing: 0;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.helix-brand::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-right: 0.6rem;
+  border: 1px solid var(--accent);
+  background: rgb(56 214 176 / 0.26);
+  box-shadow: 0 0 16px rgb(56 214 176 / 0.38);
+}
+
+.helix-nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.6rem, 2.4vw, 1.5rem);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.helix-nav-links a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.helix-brand:hover,
+.helix-nav-links a:hover {
+  color: var(--accent-hover);
+}
+
+.helix-brand:hover {
+  border-color: rgb(56 214 176 / 0.42);
+  transform: translateY(-1px);
+}
+
+.helix a:focus-visible,
+.helix button:focus-visible,
+.helix input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.helix-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(24rem, 0.62fr);
+  gap: clamp(2rem, 5vw, 6.5rem);
+  align-items: end;
+  padding-top: 5.4rem;
+}
+
+.helix-hero-copy {
+  max-width: 58rem;
+}
+
+.helix-kicker {
+  margin: 0 0 1.25rem;
+  color: var(--accent);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.helix-hero-copy .helix-kicker {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: helixEnterUp var(--dur-slow) var(--ease-out) 160ms forwards;
+}
+
+.helix h1 {
+  display: grid;
+  gap: 0.02em;
+  margin: 0;
+  max-width: 16ch;
+  font-family: var(--font-display);
+  font-size: 6.55rem;
+  line-height: 0.88;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.helix h1 > span {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.07em;
+  margin-block: -0.07em;
+}
+
+.helix h1 > span > span {
+  display: block;
+  opacity: 0;
+  transform: translateY(112%);
+  animation: helixSlot var(--dur-hero) var(--ease-out-expo) forwards;
+}
+
+.helix h1 > span:nth-child(1) > span {
+  animation-delay: 180ms;
+}
+
+.helix h1 > span:nth-child(2) > span {
+  animation-delay: 260ms;
+}
+
+.helix h1 > span:nth-child(3) > span {
+  animation-delay: 340ms;
+}
+
+.helix-dek {
+  max-width: 45rem;
+  margin: clamp(1.2rem, 3vw, 2.1rem) 0 0;
+  color: var(--text-muted);
+  font-size: 1.16rem;
+  line-height: 1.58;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: helixEnterUp var(--dur-slow) var(--ease-out) 480ms forwards;
+}
+
+.helix-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: clamp(1.8rem, 4vw, 2.9rem);
+  opacity: 0;
+  transform: translateY(18px);
+  animation: helixEnterUp var(--dur-slow) var(--ease-out) 560ms forwards;
+}
+
+.helix-primary,
+.helix-secondary,
+.helix-form button {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-s);
+  border: 1px solid transparent;
+  padding: 0 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.helix-primary,
+.helix-form button {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 0 28px rgb(56 214 176 / 0.18);
+}
+
+.helix-secondary {
+  color: var(--text);
+  background: rgb(231 236 244 / 0.035);
+  border-color: var(--border);
+}
+
+.helix-primary:hover,
+.helix-form button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.helix-secondary:hover {
+  color: var(--accent-hover);
+  border-color: rgb(56 214 176 / 0.34);
+  transform: translateY(-1px);
+}
+
+.helix-execution-card,
+.helix-terminal,
+.helix-chart-card,
+.helix-kpi,
+.helix-proof > div,
+.helix-signal-grid article,
+.helix-waitlist {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-l);
+  background: linear-gradient(180deg, rgb(17 24 34 / 0.88), rgb(8 12 18 / 0.9));
+  box-shadow: var(--shadow-m);
+}
+
+.helix-execution-card {
+  min-width: 0;
+  padding: 0.8rem;
+  opacity: 0;
+  transform: translateY(24px) scale(0.985);
+  animation: helixVisualIn var(--dur-hero) var(--ease-out-expo) 650ms forwards;
+}
+
+.helix-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 42px;
+  padding: 0 0.2rem 0.72rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.helix-panel-head em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.helix-tape {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.helix-tape-row {
+  display: grid;
+  grid-template-columns: 1fr 0.72fr 1fr 0.75fr 0.72fr;
+  gap: 0.45rem;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.55rem;
+  border: 1px solid rgb(202 224 255 / 0.07);
+  border-radius: var(--radius-m);
+  background: rgb(3 7 11 / 0.42);
+  color: var(--text-dim);
+  font-size: 0.68rem;
+}
+
+.helix-tape-row strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.helix-tape-row em,
+.helix-kpi-head em {
+  font-style: normal;
+}
+
+.is-up {
+  color: var(--accent);
+}
+
+.is-down {
+  color: var(--danger);
+}
+
+.helix-proof {
+  width: min(100% - clamp(28px, 5vw, 72px), var(--container));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  background: var(--border);
+  box-shadow: var(--shadow-l);
+}
+
+.helix-proof > div {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: clamp(1rem, 2.5vw, 1.6rem);
+}
+
+.helix-proof span,
+.helix-signal-grid span {
+  color: var(--text-dim);
+  font-size: 0.7rem;
+}
+
+.helix-proof strong {
+  display: block;
+  margin: 0.55rem 0 0.45rem;
+  font-size: 3.6rem;
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+.helix-proof p,
+.helix-section-copy p,
+.helix-signal-grid p,
+.helix-waitlist p {
+  color: var(--text-muted);
+  line-height: 1.58;
+}
+
+.helix-proof p {
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.helix-dashboard-section,
+.helix-signals,
+.helix-waitlist {
+  width: min(100% - clamp(28px, 5vw, 72px), var(--container));
+  margin-inline: auto;
+}
+
+.helix-dashboard-section {
+  padding: clamp(6rem, 10vw, 9rem) 0 0;
+}
+
+.helix-section-copy {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(16rem, 0.3fr);
+  gap: clamp(1.5rem, 4vw, 5rem);
+  align-items: end;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.helix-section-copy .helix-kicker {
+  grid-column: 1 / -1;
+  margin-bottom: -0.4rem;
+}
+
+.helix h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 4.6rem;
+  line-height: 0.96;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.helix-section-copy p {
+  margin: 0;
+  max-width: 33rem;
+  font-size: 1.06rem;
+}
+
+.helix-terminal {
+  padding: clamp(0.8rem, 1.6vw, 1.2rem);
+}
+
+.helix-terminal-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 54px;
+  padding: 0 0.2rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.helix-terminal-top span,
+.helix-terminal-top strong {
+  display: block;
+}
+
+.helix-terminal-top span {
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.helix-terminal-top strong {
+  margin-top: 0.2rem;
+  font-size: 1rem;
+}
+
+.helix-segmented {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  min-width: 12rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  overflow: hidden;
+}
+
+.helix-segmented button {
+  min-height: 38px;
+  border: 0;
+  border-right: 1px solid var(--border);
+  background: rgb(255 255 255 / 0.02);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.helix-segmented button:last-child {
+  border-right: 0;
+}
+
+.helix-segmented button.active {
+  background: rgb(56 214 176 / 0.12);
+  color: var(--accent);
+}
+
+.helix-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding-top: 0.85rem;
+}
+
+.helix-kpi {
+  padding: 0.9rem;
+  min-width: 0;
+  box-shadow: var(--shadow-s);
+}
+
+.helix-kpi-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.7rem;
+  color: var(--text-dim);
+  font-size: 0.68rem;
+}
+
+.helix-kpi > strong {
+  display: block;
+  margin-top: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.helix-spark {
+  display: block;
+  width: 100%;
+  height: 46px;
+  margin-top: 0.65rem;
+  overflow: visible;
+}
+
+.helix-spark polyline {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.2s var(--ease-out-expo) 140ms;
+}
+
+.is-visible .helix-spark polyline {
+  stroke-dashoffset: 0;
+}
+
+.helix-chart-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(20rem, 0.85fr);
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.helix-chart-card {
+  min-width: 0;
+  padding: 0.9rem;
+  box-shadow: var(--shadow-s);
+}
+
+.helix-candles {
+  width: 100%;
+  min-height: 260px;
+  display: block;
+}
+
+.helix-candles > line {
+  stroke: var(--border);
+}
+
+.helix-candles rect,
+.helix-candles .wick {
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+
+.helix-candles .up rect {
+  fill: rgb(56 214 176 / 0.72);
+}
+
+.helix-candles .up .wick {
+  stroke: rgb(56 214 176 / 0.7);
+}
+
+.helix-candles .down rect {
+  fill: rgb(255 109 122 / 0.65);
+}
+
+.helix-candles .down .wick {
+  stroke: rgb(255 109 122 / 0.66);
+}
+
+.helix-candles text {
+  fill: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.helix-depth {
+  display: grid;
+  gap: 0.45rem;
+  min-height: 260px;
+  align-content: center;
+}
+
+.helix-depth-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 4.8rem minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.helix-depth-row span {
+  height: 16px;
+  border-radius: 2px;
+  transform-origin: center;
+  opacity: 0.88;
+}
+
+.helix-depth-row .bid {
+  justify-self: end;
+  width: var(--depth);
+  background: linear-gradient(90deg, transparent, rgb(56 214 176 / 0.62));
+}
+
+.helix-depth-row .ask {
+  justify-self: start;
+  width: var(--depth);
+  background: linear-gradient(90deg, rgb(255 109 122 / 0.58), transparent);
+}
+
+.helix-depth-row b {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  text-align: center;
+}
+
+.helix-signals {
+  padding: clamp(6rem, 10vw, 9rem) 0 0;
+}
+
+.helix-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.helix-signal-grid article {
+  min-height: 240px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.helix-signal-grid h3 {
+  margin: auto 0 0.7rem;
+  font-size: 1.5rem;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.helix-signal-grid p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.helix-waitlist {
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(22rem, 0.55fr);
+  gap: clamp(1.8rem, 5vw, 5.2rem);
+  align-items: end;
+  margin-top: clamp(6rem, 10vw, 9rem);
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+  padding: clamp(1.2rem, 3vw, 2.4rem);
+}
+
+.helix-waitlist h2 {
+  max-width: 10.5ch;
+}
+
+.helix-waitlist p {
+  max-width: 36rem;
+  margin: 1.1rem 0 0;
+}
+
+.helix-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.helix-form label {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.helix-form div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+}
+
+.helix-form input {
+  min-height: 48px;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  background: rgb(0 0 0 / 0.24);
+  color: var(--text);
+  padding: 0 0.85rem;
+  font-family: var(--font-mono);
+}
+
+.helix-form input::placeholder {
+  color: var(--text-dim);
+}
+
+.helix-form p {
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes helixEnterDown {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes helixEnterUp {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes helixSlot {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes helixVisualIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 1040px) {
+  .helix-hero-grid,
+  .helix-section-copy,
+  .helix-chart-grid,
+  .helix-waitlist {
+    grid-template-columns: 1fr;
+  }
+
+  .helix-execution-card {
+    max-width: 44rem;
+  }
+
+  .helix h1 {
+    font-size: 5.5rem;
+    max-width: 12ch;
+  }
+
+  .helix h2 {
+    font-size: 3.45rem;
+  }
+
+  .helix-proof strong {
+    font-size: 3rem;
+  }
+
+  .helix-kpi-grid,
+  .helix-signal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .helix-nav {
+    align-items: flex-start;
+  }
+
+  .helix-nav-links {
+    gap: 0.7rem;
+    font-size: 0.7rem;
+  }
+
+  .helix-hero {
+    min-height: auto;
+  }
+
+  .helix-hero-grid {
+    padding-top: 3.6rem;
+  }
+
+  .helix h1 {
+    font-size: 4.35rem;
+    max-width: 8.8ch;
+  }
+
+  .helix h2 {
+    font-size: 2.55rem;
+  }
+
+  .helix-dek,
+  .helix-section-copy p {
+    font-size: 1rem;
+  }
+
+  .helix-proof strong {
+    font-size: 2.7rem;
+  }
+
+  .helix-tape-row {
+    grid-template-columns: 1fr 0.8fr;
+  }
+
+  .helix-tape-row span:nth-child(2),
+  .helix-tape-row span:nth-child(5) {
+    display: none;
+  }
+
+  .helix-proof,
+  .helix-kpi-grid,
+  .helix-signal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .helix-terminal-top,
+  .helix-form div {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .helix-segmented {
+    min-width: 0;
+  }
+
+  .helix-chart-card {
+    padding: 0.7rem;
+  }
+
+  .helix-candles {
+    min-height: 210px;
+  }
+
+  .helix-depth {
+    min-height: 210px;
+  }
+
+  .helix-form button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .helix *,
+  .helix *::before,
+  .helix *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

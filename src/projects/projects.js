@@ -34,11 +34,12 @@ export const projects = [
   },
   {
     id: "fintech-crypto-dashboard",
-    title: "Fintech crypto dashboard",
+    title: "Helix Terminal",
     path: "/fintech-crypto-dashboard",
-    label: "Capital",
-    tone: "Risk, signal, velocity",
-    prompt: "prompt here",
+    label: "Trading terminal",
+    tone: "Basis, fills, latency",
+    prompt:
+      'Build a product page plus a live dashboard mockup for "Helix Terminal", a crypto portfolio and on-chain analytics tool for professional traders. Dark, dense, precise: WebGL particle-field hero, monospaced data, handmade charts, live tickers, trader-register copy, and waitlist signup.',
   },
   {
     id: "saas-analytics-dashboard",
