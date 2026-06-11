@@ -17,11 +17,12 @@ export const projects = [
   },
   {
     id: "real-estate",
-    title: "Real estate",
+    title: "Meridian Quarter",
     path: "/real-estate",
-    label: "Property",
-    tone: "Spatial trust signals",
-    prompt: "prompt here",
+    label: "Mixed-use district",
+    tone: "Cinematic site walk",
+    prompt:
+      "Build a scroll-experience page for Meridian Quarter, a 14-acre mixed-use development launching in Austin in 2027.",
   },
   {
     id: "health-wellness",
